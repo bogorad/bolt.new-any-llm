@@ -30,13 +30,22 @@ export function getGroqModel(apiKey: string, model: string) {
   return openai(model);
 }
 
+export function getOpenRouterModel(apiKey: string, model: string) {
+  const openai = createOpenAI({
+    baseURL: 'https://openrouter.ai/api/v1/chat/completions',
+    apiKey,
+  });
+
+  return openai(model);
+}
+
 export function getOllamaModel(model: string) {
   return ollama(model);
 }
 
 export function getModel(provider: string, model: string, env: Env) {
   const apiKey = getAPIKey(env, provider);
-  
+
   switch (provider) {
     case 'Anthropic':
       return getAnthropicModel(apiKey, model);
@@ -44,6 +53,8 @@ export function getModel(provider: string, model: string, env: Env) {
       return getOpenAIModel(apiKey, model);
     case 'Groq':
       return getGroqModel(apiKey, model);
+    case 'OpenRouter':
+      return getOpenRouterModel(apiKey, model);
     default:
       return getOllamaModel(model);
   }
